@@ -44,8 +44,6 @@ class Player extends SpriteAnimationComponent
   void onGameResize(Vector2 gameSize) {
     super.onGameResize(gameSize);
 
-    position = Vector2(100, 300);
-
     x = width;
     y = gameSize.y - height - groundHeight;
     yMax = y;
@@ -54,21 +52,28 @@ class Player extends SpriteAnimationComponent
   @override
   void update(double dt) {
     super.update(dt);
+    if (!isPlaying && !gameRef.isGameStart) {
+      y = yMax;
+      speedY = 0.0;
+      y = gameRef.size.y / 2;
+    }
 
-    if (isPlaying) {
+    if (isPlaying && gameRef.isGameStart) {
       speedY += 600 * dt;
 
       angle += 0.5 * dt;
-
-      position.add(Vector2(0, speedY * dt));
+      y += speedY * dt;
     }
 
-    if (isHit) {
+    if (isHit && !isPlaying) {
       speedY += 800 * dt;
 
       angle += 0.5 * dt;
 
       position.add(Vector2(0, speedY * dt));
+      if (isOnGround()) {
+        gameRef.gameOver();
+      }
     }
 
     if (isOnGround()) {
@@ -87,6 +92,9 @@ class Player extends SpriteAnimationComponent
         isHit = true;
         isPlaying = false;
         AudioManager.instance.playSfx('hit.wav');
+        if (isOnGround()) {
+          gameRef.gameOver();
+        }
       }
     }
   }
@@ -113,6 +121,14 @@ class Player extends SpriteAnimationComponent
     }
     speedY = -250;
     angle = -0.5;
+  }
+
+  void reset() {
+    isHit = false;
+    isPlaying = false;
+    y = yMax;
+    speedY = 0.0;
+    position.y = gameRef.size.y / 2;
   }
 
   Future<void> _loadCharacterPlayer() async {

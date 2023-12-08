@@ -13,6 +13,10 @@ class EnemyManager extends PositionComponent with HasGameRef<FlappyBird> {
   double columnH = 320;
   double columnW = 52;
 
+  late Enemy topEnemy;
+
+  late Enemy bottomEnemy;
+
   @override
   Future<void> onLoad() async {
     await super.onLoad();
@@ -30,15 +34,20 @@ class EnemyManager extends PositionComponent with HasGameRef<FlappyBird> {
 // Đảm bảo chiều cao cột thừa cho spacing 100
     const minHeight = spacing / 2 + 100;
     final height = max(centerY - spacing / 2, minHeight);
+
+    topEnemy = Enemy(
+      height: height,
+      pipePosition: PipePosition.top,
+    );
+
+    bottomEnemy = Enemy(
+      height: heightMinusGround - height - spacing / 2,
+      pipePosition: PipePosition.bottom,
+    );
+
     addAll([
-      Enemy(
-        height: height,
-        pipePosition: PipePosition.top,
-      ),
-      Enemy(
-        height: heightMinusGround - height - spacing / 2,
-        pipePosition: PipePosition.bottom,
-      ),
+      topEnemy,
+      bottomEnemy,
     ]);
   }
 
@@ -51,6 +60,8 @@ class EnemyManager extends PositionComponent with HasGameRef<FlappyBird> {
         gameRef.playerProvider.score++;
         AudioManager.instance.playSfx('point.wav');
       }
+      topEnemy.removeFromParent();
+      bottomEnemy.removeFromParent();
       removeFromParent();
     }
   }

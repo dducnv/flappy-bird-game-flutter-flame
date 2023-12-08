@@ -6,6 +6,9 @@ import 'package:flappy_bird_flutter_flame/game/managers/enemy_manager.dart';
 import 'package:flappy_bird_flutter_flame/game/providers/player_provider.dart';
 import 'package:flappy_bird_flutter_flame/game/sprites/enemy.dart';
 import 'package:flappy_bird_flutter_flame/game/sprites/player.dart';
+import 'package:flappy_bird_flutter_flame/game/widgets/game_over_widget.dart';
+import 'package:flappy_bird_flutter_flame/game/widgets/launch_game_widget.dart';
+import 'package:flappy_bird_flutter_flame/game/widgets/player_menu.dart';
 import 'package:flappy_bird_flutter_flame/game/word_game.dart';
 
 class FlappyBird extends FlameGame
@@ -18,7 +21,9 @@ class FlappyBird extends FlameGame
   final WorldGame _world = WorldGame();
   final GroundGame _ground = GroundGame();
   final Player player = Player();
+  bool isGameStart = false;
   Timer interval = Timer(pipeInterval, repeat: true);
+  late EnemyManager enemyManager;
   @override
   Future<void> onLoad() async {
     await super.onLoad();
@@ -28,7 +33,8 @@ class FlappyBird extends FlameGame
 
     playerProvider = PlayerProvider();
     interval.onTick = () {
-      add(EnemyManager());
+      enemyManager = EnemyManager();
+      add(enemyManager);
     };
     add(player);
   }
@@ -36,7 +42,9 @@ class FlappyBird extends FlameGame
   @override
   void update(double dt) {
     super.update(dt);
-    interval.update(dt);
+    if (isGameStart) {
+      interval.update(dt);
+    }
   }
 
   @override
@@ -46,6 +54,38 @@ class FlappyBird extends FlameGame
       return;
     }
     player.moveUp();
+  }
+
+  void gameOver() {
+    playerProvider.paused = true;
+    overlays.add(GameOverWidget.keyWidget);
+    pauseEngine();
+  }
+
+  void startGame() {
+    overlays.remove(LaunchGameWidget.keyWidget);
+    overlays.add(PlayerMenu.keyWidget);
+    player.moveUp();
+    playerProvider.paused = false;
+    isGameStart = true;
+    resumeEngine();
+  }
+
+  void gameOverScreen() {
+    playerProvider.paused = true;
+    overlays.add(GameOverWidget.keyWidget);
+    interval.stop();
+    pauseEngine();
+  }
+
+  void pushToLauchGame() {
+    overlays.remove(PlayerMenu.keyWidget);
+    overlays.remove(GameOverWidget.keyWidget);
+    overlays.add(LaunchGameWidget.keyWidget);
+    player.reset();
+    isGameStart = false;
+    remove(enemyManager);
+    resumeEngine();
   }
 
   void pauseGame() {

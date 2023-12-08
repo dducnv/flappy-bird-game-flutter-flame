@@ -18,34 +18,39 @@ class GameOverWidget extends StatelessWidget {
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           color: Colors.black.withAlpha(100),
           child: SizedBox(
-            width: MediaQuery.of(context).size.width * 0.5,
-            height: MediaQuery.of(context).size.height * 0.7,
+            width: MediaQuery.of(context).size.width * 0.9,
+            height: MediaQuery.of(context).size.height * 0.4,
             child: Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: 20, horizontal: 100),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      'Game Over',
-                      style: TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
+                    Image.asset(
+                      'assets/images/sprites/gameover.png',
+                      height: 70,
+                      fit: BoxFit.contain,
                     ),
                     const SizedBox(height: 20),
-                    Text(
-                      gameRef.playerProvider.score.toString(),
-                      style: const TextStyle(
-                        fontSize: 45,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: gameRef.playerProvider.score
+                          .toString()
+                          .split('')
+                          .map((e) {
+                        return Image.asset(
+                          'assets/images/sprites/$e.png',
+                          height: 60,
+                          fit: BoxFit.contain,
+                        );
+                      }).toList(),
                     ),
                     const SizedBox(height: 35),
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        gameRef.pushToLauchGame();
+                      },
                       child: const Text('Chơi lại'),
                     ),
                   ],

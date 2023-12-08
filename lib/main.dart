@@ -29,7 +29,7 @@ class MainApp extends StatelessWidget {
           ),
         ),
         initialActiveOverlays: const [
-          PlayerMenu.keyWidget,
+          LaunchGameWidget.keyWidget,
         ],
         overlayBuilderMap: {
           LaunchGameWidget.keyWidget: (_, game) => LaunchGameWidget(

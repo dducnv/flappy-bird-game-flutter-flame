@@ -14,7 +14,7 @@ class LaunchGameWidget extends StatelessWidget {
         child: Center(
           child: InkWell(
               onTap: () {
-                print("Start game");
+                gameRef.startGame();
               },
               child: Image.asset("assets/images/sprites/message.png")),
         ));

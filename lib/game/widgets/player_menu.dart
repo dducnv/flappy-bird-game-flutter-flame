@@ -26,6 +26,7 @@ class PlayerMenu extends StatelessWidget {
                             return Image.asset(
                               'assets/images/sprites/$e.png',
                               height: 50,
+                              fit: BoxFit.contain,
                             );
                           }).toList(),
                         );
