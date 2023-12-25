@@ -3,7 +3,6 @@ import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
 import 'package:flappy_bird_flutter_flame/core/enums/enum.dart';
 import 'package:flappy_bird_flutter_flame/game/flappy_bird.dart';
-import 'package:flappy_bird_flutter_flame/game/managers/audio_manager.dart';
 
 const double columnH = 320;
 const double columnW = 52;

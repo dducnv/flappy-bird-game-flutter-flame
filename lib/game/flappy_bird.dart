@@ -65,7 +65,6 @@ class FlappyBird extends FlameGame
   void startGame() {
     overlays.remove(LaunchGameWidget.keyWidget);
     overlays.add(PlayerMenu.keyWidget);
-    player.moveUp();
     playerProvider.paused = false;
     isGameStart = true;
     resumeEngine();

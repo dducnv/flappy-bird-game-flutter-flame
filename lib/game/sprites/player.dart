@@ -33,11 +33,10 @@ class Player extends SpriteAnimationComponent
       position: Vector2(size.x * 0.4, size.y * 0.2) / 2,
     ));
     size = Vector2(34, 24);
-
-    position = Vector2(100, 300);
+    yMax = y;
+    y = gameRef.size.y / 2;
     anchor = Anchor.center;
     x = width;
-    yMax = y;
   }
 
   @override
@@ -52,10 +51,10 @@ class Player extends SpriteAnimationComponent
   @override
   void update(double dt) {
     super.update(dt);
-    if (!isPlaying && !gameRef.isGameStart) {
-      y = yMax;
+    if (!gameRef.isGameStart || !isPlaying) {
       speedY = 0.0;
       y = gameRef.size.y / 2;
+      position.y = gameRef.size.y / 2;
     }
 
     if (isPlaying && gameRef.isGameStart) {
@@ -77,9 +76,13 @@ class Player extends SpriteAnimationComponent
     }
 
     if (isOnGround()) {
+      isHit = true;
+      isPlaying = false;
+      AudioManager.instance.playSfx('hit.wav');
       y = yMax;
       speedY = 0.0;
       angle = 0.7;
+      gameRef.gameOver();
     }
   }
 
@@ -114,6 +117,11 @@ class Player extends SpriteAnimationComponent
   }
 
   void moveUp() {
+    if (isPlaying == false) {
+      startGame();
+      return;
+    }
+
     if (isHit) return;
     AudioManager.instance.playSfx('wing.wav');
     if (!isPlaying) {
@@ -128,6 +136,13 @@ class Player extends SpriteAnimationComponent
     isPlaying = false;
     y = yMax;
     speedY = 0.0;
+    position.y = gameRef.size.y / 2;
+  }
+
+  void startGame() {
+    speedY = 0.0;
+    isPlaying = true;
+    y = yMax;
     position.y = gameRef.size.y / 2;
   }
 
