@@ -123,12 +123,11 @@ class Player extends SpriteAnimationComponent
   }
 
   void moveUp() {
+    if (isHit) return;
     if (isPlaying == false) {
       startGame();
       return;
     }
-
-    if (isHit) return;
     AudioManager.instance.playSfx('wing.wav');
     if (!isPlaying) {
       isPlaying = true;
