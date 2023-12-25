@@ -51,20 +51,26 @@ class Player extends SpriteAnimationComponent
   @override
   void update(double dt) {
     super.update(dt);
-    if (!gameRef.isGameStart || !isPlaying) {
+
+    if (!gameRef.isGameStart) {
       speedY = 0.0;
       y = gameRef.size.y / 2;
-      position.y = gameRef.size.y / 2;
+      return;
     }
 
-    if (isPlaying && gameRef.isGameStart) {
+    if (gameRef.isGameStart && !isPlaying && !isHit) {
+      y = gameRef.size.y / 2;
+      return;
+    }
+
+    if (isPlaying && gameRef.isGameStart && !isHit) {
       speedY += 600 * dt;
 
       angle += 0.5 * dt;
       y += speedY * dt;
     }
 
-    if (isHit && !isPlaying) {
+    if (isHit && !isPlaying && gameRef.isGameStart) {
       speedY += 800 * dt;
 
       angle += 0.5 * dt;
@@ -136,6 +142,7 @@ class Player extends SpriteAnimationComponent
     isPlaying = false;
     y = yMax;
     speedY = 0.0;
+    angle = 0.0;
     position.y = gameRef.size.y / 2;
   }
 

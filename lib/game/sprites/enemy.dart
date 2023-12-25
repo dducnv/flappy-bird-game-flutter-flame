@@ -30,6 +30,7 @@ class Enemy extends SpriteComponent
   @override
   Future<void> onLoad() async {
     await super.onLoad();
+    priority = -1;
     final columnTop = await Flame.images.load('sprites/pipe-top.png');
     final columnBottom = await Flame.images.load('sprites/pipe-green.png');
     size = Vector2(columnW, height);

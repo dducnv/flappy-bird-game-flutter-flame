@@ -27,6 +27,7 @@ class FlappyBird extends FlameGame
   @override
   Future<void> onLoad() async {
     await super.onLoad();
+    priority = 2;
     add(_world);
 
     add(_ground);
