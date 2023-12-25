@@ -142,12 +142,14 @@ class Player extends SpriteAnimationComponent
     y = yMax;
     speedY = 0.0;
     angle = 0.0;
+
     position.y = gameRef.size.y / 2;
   }
 
   void startGame() {
     speedY = 0.0;
     isPlaying = true;
+
     y = yMax;
     position.y = gameRef.size.y / 2;
   }

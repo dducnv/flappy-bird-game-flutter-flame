@@ -66,6 +66,7 @@ class FlappyBird extends FlameGame
   void startGame() {
     overlays.remove(LaunchGameWidget.keyWidget);
     overlays.add(PlayerMenu.keyWidget);
+
     playerProvider.paused = false;
     isGameStart = true;
     resumeEngine();
@@ -79,6 +80,12 @@ class FlappyBird extends FlameGame
   }
 
   void pushToLauchGame() {
+    final enemies = world.children.whereType<Enemy>();
+    print(enemies.length);
+    for (var element in enemies) {
+      element.removeFromParent();
+    }
+    playerProvider.score = 0;
     overlays.remove(PlayerMenu.keyWidget);
     overlays.remove(GameOverWidget.keyWidget);
     overlays.add(LaunchGameWidget.keyWidget);
